@@ -1,0 +1,18 @@
+server:
+  servlet:
+    context-path: /admin-ecommerce
+  port: 8085
+spring:
+  datasource:
+    url: jdbc:db2://localhost:50003/market
+    username: db2inst1
+    password: db2inst12
+    driverClassName: com.ibm.db2.jcc.DB2Driver
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      use-new-id-generator-mappings: false
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
