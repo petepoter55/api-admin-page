@@ -2,14 +2,17 @@ package com.apiadminpage.entity.account;
 
 import com.apiadminpage.environment.DatabaseSchema;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Data
+@Accessors(chain = true)
 @Table(name = "ACCOUNT_INFO", schema = DatabaseSchema.AccountInfo)
-public class AccountInfo {
+public class AccountInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

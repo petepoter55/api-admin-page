@@ -2,14 +2,17 @@ package com.apiadminpage.entity.account;
 
 import com.apiadminpage.environment.DatabaseSchema;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Data
+@Accessors(chain = true)
 @Table(name = "ACCOUNT", schema = DatabaseSchema.Account)
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -36,4 +39,7 @@ public class Account {
     private Date updateDateTime;
     @Column(name = "DELFLAG")
     private Boolean delFlag;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "userId", referencedColumnName = "id")
+//    private AccountInfo accountInfo;
 }
