@@ -21,6 +21,7 @@ public class Constant {
     //register
     public final static String ERROR_REGISTER_CHECKDATA_DUPLICATE = "Data Register is Duplicate";
     public final static String ERROR_UPDATE_DATA_NOT_FOUND = "Data Register is Not Found";
+    public final static String ERROR_INQUIRY_DATA_NOT_FOUND = "Data Register is Not Found";
     public final static String SUCCESS_REGISTER_ACCOUNT = "Register Account Success!";
     public final static String SUCCESS_UPDATE_ACCOUNT = "Update Account Success!";
     public final static String SUCCESS_DELETE_ACCOUNT = "Delete Account Success!";
@@ -31,4 +32,7 @@ public class Constant {
     public final static String TYPE_UPDATE_SUCCESS = "R02";
     public final static String TYPE_REGISTER_FAILED = "F01";
     public final static String TYPE_UPDATE_FAILED = "F02";
+
+    public final static String SUCCESS_INQUIRY_LOG = "Inquiry Log Account Success!";
+    public final static String ERROR_INQUIRY_LOG_DATA_NOT_FOUND = "Data Log is Not Found";
 }

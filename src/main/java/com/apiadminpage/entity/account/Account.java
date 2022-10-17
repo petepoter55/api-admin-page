@@ -39,7 +39,4 @@ public class Account implements Serializable {
     private Date updateDateTime;
     @Column(name = "DELFLAG")
     private Boolean delFlag;
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "userId", referencedColumnName = "id")
-//    private AccountInfo accountInfo;
 }

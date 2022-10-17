@@ -6,6 +6,7 @@ import com.apiadminpage.environment.Constant;
 import com.apiadminpage.exception.ResponseException;
 import com.apiadminpage.model.request.account.AccountRequest;
 import com.apiadminpage.model.request.account.AccountUpdateRequest;
+import com.apiadminpage.model.request.account.InquiryAccountRequest;
 import com.apiadminpage.model.request.log.LogRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.model.response.account.ResponseAccount;
@@ -16,10 +17,13 @@ import com.apiadminpage.service.log.LogService;
 import com.apiadminpage.utils.UtilityTools;
 import com.apiadminpage.validator.ValidateAccount;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -36,16 +40,18 @@ public class AccountService {
     private final ValidateAccount validateAccount;
     private final LogService logService;
     private final AccountInfoService accountInfoService;
+    private final EntityManager entityManager;
 
     UtilityTools utilityTools = new UtilityTools();
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, AccountInfoRepository accountInfoRepository, ValidateAccount validateAccount, LogService logService, AccountInfoService accountInfoService) {
+    public AccountService(AccountRepository accountRepository, AccountInfoRepository accountInfoRepository, ValidateAccount validateAccount, LogService logService, AccountInfoService accountInfoService, EntityManager entityManager) {
         this.accountInfoRepository = accountInfoRepository;
         this.accountRepository = accountRepository;
         this.validateAccount = validateAccount;
         this.logService = logService;
         this.accountInfoService = accountInfoService;
+        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -159,37 +165,16 @@ public class AccountService {
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_DELETE_ACCOUNT, null);
     }
 
-    public Response inquiryAccount(Integer id) {
+    public Response inquiryAccountById(Integer id) {
         ResponseAccount responseAccount = new ResponseAccount();
         try {
             Optional<Account> accountOptional = accountRepository.findById(id);
             if (!accountOptional.isPresent()) {
-                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_UPDATE_DATA_NOT_FOUND);
+                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_INQUIRY_DATA_NOT_FOUND);
             }
+
             Account account = accountOptional.get();
-            responseAccount.setFirstname(account.getFirstname());
-            responseAccount.setLastname(account.getLastname());
-            responseAccount.setEmail(account.getEmail());
-            responseAccount.setUsername(account.getUsername());
-            responseAccount.setRole(account.getRole());
-            responseAccount.setDelFlag(account.getDelFlag());
-            responseAccount.setCreateDateTime(utilityTools.generateDateTimeToThai(account.getCreateDateTime()));
-            responseAccount.setUpdateDateTime(account.getUpdateDateTime());
-
-            AccountInfo accountInfo = accountInfoService.inquiryAccountInfo(String.valueOf(accountOptional.get().getId()));
-            if (accountInfo != null) {
-                ResponseAccountInfo responseAccountInfo = new ResponseAccountInfo();
-                responseAccountInfo.setUserId(accountInfo.getUserId());
-                responseAccountInfo.setDistrict(accountInfo.getDistrict());
-                responseAccountInfo.setPhone(accountInfo.getPhone());
-                responseAccountInfo.setProvince(accountInfo.getProvince());
-                responseAccountInfo.setCitizenId(accountInfo.getCitizenId());
-                responseAccountInfo.setBirthDate(accountInfo.getBirthDate());
-                responseAccountInfo.setCreateDateTime(accountInfo.getCreateDateTime());
-                responseAccountInfo.setUpdateDateTime(accountInfo.getUpdateDateTime());
-
-                responseAccount.setResponseAccountInfo(responseAccountInfo);
-            }
+            responseAccount = mapInquiryAccount(account);
 
         } catch (ResponseException e) {
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
@@ -206,32 +191,10 @@ public class AccountService {
         try {
             List<Account> accountList = accountRepository.findAll();
             if (accountList.size() < 0) {
-                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_UPDATE_DATA_NOT_FOUND);
+                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_INQUIRY_DATA_NOT_FOUND);
             }
             for (Account account : accountList) {
-                responseAccount.setFirstname(account.getFirstname());
-                responseAccount.setLastname(account.getLastname());
-                responseAccount.setEmail(account.getEmail());
-                responseAccount.setUsername(account.getUsername());
-                responseAccount.setRole(account.getRole());
-                responseAccount.setDelFlag(account.getDelFlag());
-                responseAccount.setCreateDateTime(utilityTools.generateDateTimeToThai(account.getCreateDateTime()));
-                responseAccount.setUpdateDateTime(account.getUpdateDateTime());
-
-                AccountInfo accountInfo = accountInfoService.inquiryAccountInfo(String.valueOf(account.getId()));
-                if (accountInfo != null) {
-                    ResponseAccountInfo responseAccountInfo = new ResponseAccountInfo();
-                    responseAccountInfo.setUserId(accountInfo.getUserId());
-                    responseAccountInfo.setDistrict(accountInfo.getDistrict());
-                    responseAccountInfo.setPhone(accountInfo.getPhone());
-                    responseAccountInfo.setProvince(accountInfo.getProvince());
-                    responseAccountInfo.setCitizenId(accountInfo.getCitizenId());
-                    responseAccountInfo.setBirthDate(accountInfo.getBirthDate());
-                    responseAccountInfo.setCreateDateTime(accountInfo.getCreateDateTime());
-                    responseAccountInfo.setUpdateDateTime(accountInfo.getUpdateDateTime());
-
-                    responseAccount.setResponseAccountInfo(responseAccountInfo);
-                }
+                responseAccount = mapInquiryAccount(account);
                 responseAccountList.add(responseAccount);
             }
         } catch (ResponseException e) {
@@ -241,6 +204,97 @@ public class AccountService {
         }
 
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_ACCOUNT, responseAccountList);
+    }
+
+    public Response inquiryByPage(InquiryAccountRequest request) {
+        List<Account> accountList;
+
+        try {
+            accountList = searchAccountByPage(request);
+            if (accountList.size() < 0) {
+                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_INQUIRY_DATA_NOT_FOUND);
+            }
+        } catch (ResponseException e) {
+            return Response.fail(e.getExceptionCode(), e.getMessage(), null);
+        }
+
+        return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_ACCOUNT, accountList);
+    }
+
+    public ResponseAccount mapInquiryAccount(Account account) throws ParseException {
+        ResponseAccount responseAccount = new ResponseAccount();
+
+        responseAccount.setFirstname(account.getFirstname());
+        responseAccount.setLastname(account.getLastname());
+        responseAccount.setEmail(account.getEmail());
+        responseAccount.setUsername(account.getUsername());
+        responseAccount.setRole(account.getRole());
+        responseAccount.setDelFlag(account.getDelFlag());
+        responseAccount.setCreateDateTime(utilityTools.generateDateTimeToThai(account.getCreateDateTime()));
+        responseAccount.setUpdateDateTime(account.getUpdateDateTime());
+
+        AccountInfo accountInfo = accountInfoService.inquiryAccountInfo(String.valueOf(account.getId()));
+        if (accountInfo != null) {
+            ResponseAccountInfo responseAccountInfo = new ResponseAccountInfo();
+            responseAccountInfo.setUserId(accountInfo.getUserId());
+            responseAccountInfo.setDistrict(accountInfo.getDistrict());
+            responseAccountInfo.setPhone(accountInfo.getPhone());
+            responseAccountInfo.setProvince(accountInfo.getProvince());
+            responseAccountInfo.setCitizenId(accountInfo.getCitizenId());
+            responseAccountInfo.setBirthDate(accountInfo.getBirthDate());
+            responseAccountInfo.setCreateDateTime(accountInfo.getCreateDateTime());
+            responseAccountInfo.setUpdateDateTime(accountInfo.getUpdateDateTime());
+
+            responseAccount.setResponseAccountInfo(responseAccountInfo);
+        }
+        return responseAccount;
+    }
+
+    public List<Account> searchAccountByPage(InquiryAccountRequest request) {
+        List<Account> accountList;
+        try {
+            //createQuery
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Account> criteriaQuery = criteriaBuilder.createQuery(Account.class);
+            Root<Account> accountRoot = criteriaQuery.from(Account.class);
+            criteriaQuery.select(accountRoot);
+
+            //list condition
+            List<Predicate> predicates = new ArrayList<>();
+            if (request.getUsername() != null && !("").equals(request.getUsername())) {
+                predicates.add(criteriaBuilder.like(accountRoot.get("username"), "%" + request.getUsername() + "%"));
+            }
+            if (request.getFirstname() != null && !("").equals(request.getFirstname())) {
+                predicates.add(criteriaBuilder.like(accountRoot.get("firstname"), "%" + request.getFirstname() + "%"));
+            }
+            if (request.getLastname() != null && !("").equals(request.getLastname())) {
+                predicates.add(criteriaBuilder.like(accountRoot.get("lastname"), "%" + request.getLastname() + "%"));
+            }
+            if (request.getEmail() != null && !("").equals(request.getEmail())) {
+                predicates.add(criteriaBuilder.like(accountRoot.get("email"), "%" + request.getEmail() + "%"));
+            }
+            if (request.getRole() != null && !("").equals(request.getRole())) {
+                predicates.add(criteriaBuilder.equal(accountRoot.get("role"), request.getRole()));
+            }
+            if (request.getCreateDateTimeBefore() != null && !("").equals(request.getCreateDateTimeBefore())) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(accountRoot.get("createBy"), request.getCreateDateTimeBefore()));
+            }
+            if (request.getCreateDateTimeEnd() != null && !("").equals(request.getCreateDateTimeEnd())){
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(accountRoot.get("createBy"),request.getCreateDateTimeEnd()));
+            }
+
+            criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+            accountList = entityManager
+                    .createQuery(criteriaQuery)
+                    .setMaxResults(request.getPageSize()) // pageSize
+                    .setFirstResult(request.getPageNumber() * request.getPageSize()) // offset
+                    .getResultList();
+
+        } catch (ResponseException e) {
+            throw new RuntimeException();
+        }
+
+        return accountList;
     }
 
 }
