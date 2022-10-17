@@ -1,5 +1,6 @@
 package com.apiadminpage.controller.account;
 
+import com.apiadminpage.entity.account.AccountInfo;
 import com.apiadminpage.model.request.account.AccountInfoRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.service.account.AccountInfoService;
@@ -37,5 +38,22 @@ public class AccountInfoController {
             @Valid @RequestBody(required = true) AccountInfoRequest accountInfoRequest
     ) {
         return accountInfoService.createAccountInfo(accountInfoRequest);
+    }
+
+    @ApiOperation(value = "Inquiry Account Info By User Id", nickname = "inquiryAccountInfoByUserId", notes = "Inquiry Account Info By User Id")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Business Error"),
+            @ApiResponse(code = 500, message = "Internal server error occurred"),
+            @ApiResponse(code = 503, message = "Service Unavailable")})
+    @RequestMapping(value = "/inquiry/{userid}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody AccountInfo inquiryAccountInfo(
+            @PathVariable(value = "userid") String userid
+    ) {
+        return accountInfoService.inquiryAccountInfo(userid);
     }
 }

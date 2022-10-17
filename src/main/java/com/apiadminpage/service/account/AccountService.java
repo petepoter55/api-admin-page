@@ -112,17 +112,17 @@ public class AccountService {
             account = accountOptional.get();
             currentDate = utilityTools.getFormatsDateMilli();
 
-            if (accountUpdateRequest.getLastname() != null)
+            if (accountUpdateRequest.getLastname() != null && !("").equals(accountUpdateRequest.getLastname()))
                 account.setLastname(accountUpdateRequest.getLastname());
-            if (accountUpdateRequest.getFirstname() != null)
+            if (accountUpdateRequest.getFirstname() != null && !("").equals(accountUpdateRequest.getFirstname()))
                 account.setFirstname(accountUpdateRequest.getFirstname());
-            if (accountUpdateRequest.getEmail() != null)
+            if (accountUpdateRequest.getEmail() != null && !("").equals(accountUpdateRequest.getEmail()))
                 account.setEmail(accountUpdateRequest.getEmail());
-            if (accountUpdateRequest.getRole() != null)
+            if (accountUpdateRequest.getRole() != null && !("").equals(accountUpdateRequest.getRole()))
                 account.setRole(accountUpdateRequest.getRole());
-            if (accountUpdateRequest.getUpdateBy() != null)
+            if (accountUpdateRequest.getUpdateBy() != null && !("").equals(accountUpdateRequest.getUpdateBy()))
                 account.setUpdateBy(accountUpdateRequest.getUpdateBy());
-            if (accountUpdateRequest.getDelFlag() != null)
+            if (accountUpdateRequest.getDelFlag() != null && !("").equals(accountUpdateRequest.getDelFlag()))
                 account.setDelFlag(accountUpdateRequest.getDelFlag());
 
             account.setUpdateDateTime(utilityTools.getFormatsDateMilli());
@@ -173,8 +173,7 @@ public class AccountService {
                 throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_INQUIRY_DATA_NOT_FOUND);
             }
 
-            Account account = accountOptional.get();
-            responseAccount = mapInquiryAccount(account);
+            responseAccount = mapInquiryAccount(accountOptional.get());
 
         } catch (ResponseException e) {
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
@@ -277,10 +276,10 @@ public class AccountService {
                 predicates.add(criteriaBuilder.equal(accountRoot.get("role"), request.getRole()));
             }
             if (request.getCreateDateTimeBefore() != null && !("").equals(request.getCreateDateTimeBefore())) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(accountRoot.get("createBy"), request.getCreateDateTimeBefore()));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(accountRoot.get("createDateTime"), request.getCreateDateTimeBefore()));
             }
             if (request.getCreateDateTimeEnd() != null && !("").equals(request.getCreateDateTimeEnd())){
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(accountRoot.get("createBy"),request.getCreateDateTimeEnd()));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(accountRoot.get("createDateTime"),request.getCreateDateTimeEnd()));
             }
 
             criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));

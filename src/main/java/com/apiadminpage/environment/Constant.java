@@ -27,6 +27,16 @@ public class Constant {
     public final static String SUCCESS_DELETE_ACCOUNT = "Delete Account Success!";
     public final static String SUCCESS_INQUIRY_ACCOUNT = "Inquiry Account Success!";
 
+    //product
+    public final static String SUCCESS_CREATE_PRODUCT = "Create Product Success!";
+    public final static String SUCCESS_UPDATE_PRODUCT = "Update Product Success!";
+    public final static String SUCCESS_DELETE_PRODUCT = "Delete Product Success!";
+    public final static String SUCCESS_INQUIRY_PRODUCT = "Inquiry Product Success!";
+    public final static String ERROR_CREATE_PRODUCT_DUPLICATE = "Data Product is Duplicate";
+    public final static String ERROR_PRODUCT_NOT_FOUND = "Data Product is Not Found";
+    public final static String PRODUCT_STATUS_ACTIVE = "active";
+    public final static String PRODUCT_STATUS_INACTIVE = "Inactive";
+
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
     public final static String TYPE_UPDATE_SUCCESS = "R02";
