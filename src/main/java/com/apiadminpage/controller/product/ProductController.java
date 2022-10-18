@@ -8,11 +8,13 @@ import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.service.product.ProductService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -110,5 +112,23 @@ public class ProductController {
             @Valid @RequestBody(required = true) ProductInquiryRequest productInquiryRequest
     ) {
         return productService.searchProductByPage(productInquiryRequest);
+    }
+
+    @ApiOperation(value = "Import Product", nickname = "ImportProduct", notes = "Import Product in database")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Business Error"),
+            @ApiResponse(code = 500, message = "Internal server error occurred"),
+            @ApiResponse(code = 503, message = "Service Unavailable")})
+    @RequestMapping(value = "/import-product", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Response importProduct(
+            @ApiParam(name = "upFile", value = "File import Product", required = true)
+            @RequestParam("upFile") MultipartFile file
+    ) {
+        return productService.importProduct(file);
     }
 }

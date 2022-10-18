@@ -9,14 +9,19 @@ import com.apiadminpage.model.request.product.ProductUpdateRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.utils.UtilityTools;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +147,39 @@ public class ProductService {
                     .getResultList();
         } catch (ResponseException e) {
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
+        }
+        return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_PRODUCT, productList);
+    }
+
+    public Response importProduct(MultipartFile file) {
+        List<ProductRequest> productList = new ArrayList<>();
+        try {
+            if (!(Constant.TYPE_FILE_EXCEL).equals(file.getContentType())) {
+                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_TYPE_INVALID);
+            }
+
+            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet worksheet = workbook.getSheetAt(0);
+
+            for (int index = 0; index < worksheet.getPhysicalNumberOfRows(); index++) {
+                if (index > 0) { // because index 0 is title excel
+                    XSSFRow row = worksheet.getRow(index);
+
+                    ProductRequest productRequest = new ProductRequest();
+                    productRequest.setProductName(row.getCell(1).getStringCellValue());
+                    productRequest.setDescription(row.getCell(2).getStringCellValue());
+                    productRequest.setProductType(row.getCell(3).getStringCellValue());
+                    productRequest.setProductQuantity(String.valueOf((int) row.getCell(4).getNumericCellValue()));
+                    productRequest.setPrice(String.valueOf(row.getCell(5).getNumericCellValue()));
+                    productList.add(productRequest);
+
+                    createProduct(productRequest);
+                }
+            }
+        } catch (ResponseException e) {
+            return Response.fail(e.getExceptionCode(), e.getMessage(), null);
+        } catch (IOException | IllegalStateException e) {
+            return Response.fail(Constant.STATUS_CODE_FAIL, e.getMessage(), null);
         }
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_PRODUCT, productList);
     }

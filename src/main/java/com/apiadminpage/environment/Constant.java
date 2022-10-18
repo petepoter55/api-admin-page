@@ -32,10 +32,14 @@ public class Constant {
     public final static String SUCCESS_UPDATE_PRODUCT = "Update Product Success!";
     public final static String SUCCESS_DELETE_PRODUCT = "Delete Product Success!";
     public final static String SUCCESS_INQUIRY_PRODUCT = "Inquiry Product Success!";
+    public final static String SUCCESS_IMPORT_PRODUCT = "Import Product Success!";
     public final static String ERROR_CREATE_PRODUCT_DUPLICATE = "Data Product is Duplicate";
     public final static String ERROR_PRODUCT_NOT_FOUND = "Data Product is Not Found";
     public final static String PRODUCT_STATUS_ACTIVE = "active";
     public final static String PRODUCT_STATUS_INACTIVE = "Inactive";
+    public final static String ERROR_FILE_TYPE_INVALID = "Invalid File Type Should be Excel file.";
+
+    public final static String TYPE_FILE_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
