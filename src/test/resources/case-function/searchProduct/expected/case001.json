@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "productCode": "product-004877",
+    "productType": "V",
+    "productName": "แอปเปิ้ลเขียว เบอร์ 100 แพ็ค x 10 ลูก",
+    "description": "แอปเปิ้ลเขียวนำเข้าจากประเทศนิวซีแลนด์มีรสชาติหวานและเปรี้ยวเล็กน้อย",
+    "status": "active",
+    "productQuantity": "100",
+    "price": "139.00",
+    "createBy": null,
+    "updateBy": null,
+    "createDateTime": "2022-05-12 00:00:00",
+    "updateDateTime": "2022-05-12 00:00:00",
+    "delFlag": null
+  }
+]

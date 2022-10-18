@@ -1,0 +1,26 @@
+{
+  "productUpdateRequest": {
+    "productCode": "product-000376",
+    "productName": "แอปเปิ้ลแดง",
+    "productType": "V",
+    "description": "",
+    "productQuantity": "35",
+    "price": "100.55",
+    "status": ""
+  },
+  "product": {
+    "id": 1,
+    "productCode": "product-000376",
+    "productType": "V",
+    "productName": "แอปเปิ้ลเขียว",
+    "description": "แอปเปิ้ลเขียวนำเข้าจากประเทศนิวซีแลนด์มีรสชาติหวานและเปรี้ยวเล็กน้อย",
+    "status": "active",
+    "productQuantity": "100",
+    "price": "139.00",
+    "createBy": null,
+    "updateBy": null,
+    "createDateTime": "2022-05-12 00:00:00",
+    "updateDateTime": "2022-05-12 00:00:00",
+    "delFlag": null
+  }
+}

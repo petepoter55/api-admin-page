@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "productCode": "product-000376",
+  "productType": "V",
+  "productName": "แอปเปิ้ลแดง",
+  "description": "แอปเปิ้ลเขียวนำเข้าจากประเทศนิวซีแลนด์มีรสชาติหวานและเปรี้ยวเล็กน้อย",
+  "status": "active",
+  "productQuantity": "100",
+  "price": "100.55",
+  "createBy": null,
+  "updateBy": null,
+  "createDateTime": "2022-05-12 00:00:00",
+  "updateDateTime": "2022-05-12 00:00:00",
+  "delFlag": null
+}
