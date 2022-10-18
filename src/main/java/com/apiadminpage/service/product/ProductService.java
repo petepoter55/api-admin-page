@@ -9,6 +9,7 @@ import com.apiadminpage.model.request.product.ProductUpdateRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.utils.UtilityTools;
+import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,6 +29,8 @@ import java.util.List;
 
 @Service
 public class ProductService {
+    private static final Logger logger = Logger.getLogger(ProductService.class);
+
     private final ProductRepository productRepository;
     private final EntityManager entityManager;
 
@@ -40,6 +43,8 @@ public class ProductService {
     }
 
     public Response createProduct(ProductRequest productRequest) {
+        logger.info("start create product");
+        logger.info("product request : " + productRequest);
         Product product = new Product();
         try {
             Product productCheck = productRepository.findByProductName(productRequest.getProductName());
@@ -59,14 +64,19 @@ public class ProductService {
 
             productRepository.save(product);
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
+        logger.info("done create product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_CREATE_PRODUCT, product);
     }
 
     public Response updateProduct(ProductUpdateRequest productUpdateRequest) {
+        logger.info("start update product");
+        logger.info("update request : " + productUpdateRequest);
         Product product;
         try {
             product = productRepository.findByProductCode(productUpdateRequest.getProductCode());
@@ -90,23 +100,32 @@ public class ProductService {
             product.setUpdateDateTime(utilityTools.getFormatsDateMilli());
             productRepository.save(product);
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
+        logger.info("done update product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_UPDATE_PRODUCT, product);
     }
 
     public Response deleteProduct(Integer productId) {
+        logger.info("start delete product");
+        logger.info("id : " + productId);
         try {
             productRepository.deleteById(productId);
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         }
+        logger.info("done delete product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_DELETE_PRODUCT, null);
     }
 
     public Response searchProductByPage(ProductInquiryRequest request) {
+        logger.info("start inquiry product");
+        logger.info("inquiry request : " + request);
         List<Product> productList;
         try {
             //createQuery
@@ -146,12 +165,17 @@ public class ProductService {
                     .setFirstResult(request.getPageNumber() * request.getPageSize()) // offset
                     .getResultList();
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         }
+        logger.info("done inquiry product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_PRODUCT, productList);
     }
 
     public Response importProduct(MultipartFile file) {
+        logger.info("start import product");
+        logger.info("file type : " + file.getContentType());
+        logger.info("file name : " + file.getName());
         List<ProductRequest> productList = new ArrayList<>();
         try {
             if (!(Constant.TYPE_FILE_EXCEL).equals(file.getContentType())) {
@@ -177,10 +201,13 @@ public class ProductService {
                 }
             }
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (IOException | IllegalStateException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(Constant.STATUS_CODE_FAIL, e.getMessage(), null);
         }
+        logger.info("done import product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_PRODUCT, productList);
     }
 }

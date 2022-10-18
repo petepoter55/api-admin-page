@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p: %c - %m%n" />
+        </layout>
+    </appender>
+    <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="append" value="true" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="file" value="/Users/boonyaris/Desktop/project/log_project/project_market_${hostName}.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c: %m%n" />
+        </layout>
+    </appender>
+    <logger name="com.apiadminpage">
+        <level value="info,debug,error" />
+    </logger>
+    <logger name="org.springframework.core">
+        <level value="info" />
+    </logger>
+    <logger name="org.springframework.beans">
+        <level value="info" />
+    </logger>
+    <logger name="org.springframework.context">
+        <level value="info" />
+    </logger>
+    <logger name="org.springframework.web">
+        <level value="info" />
+    </logger>
+    <root>
+        <priority value="info,debug,error" />
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+</log4j:configuration>

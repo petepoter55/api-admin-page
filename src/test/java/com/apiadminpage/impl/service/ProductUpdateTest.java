@@ -1,8 +1,8 @@
 package com.apiadminpage.impl.service;
 
 import com.apiadminpage.entity.product.Product;
+import com.apiadminpage.environment.Constant;
 import com.apiadminpage.exception.ResponseException;
-import com.apiadminpage.impl.model.product.ProductSearchTestRequest;
 import com.apiadminpage.impl.model.product.ProductUpdateTestRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,8 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,6 +31,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ProductUpdateTest {
+    private static final Logger logger = Logger.getLogger(ProductUpdateTest.class);
+
     @Mock
     private ProductRepository productRepository;
     @InjectMocks
@@ -51,11 +54,13 @@ public class ProductUpdateTest {
                 //ACT
                 Response responseActual = productService.updateProduct(productUpdateTestRequest.getProductUpdateRequest());
                 Product actual = (Product) responseActual.getData();
+
                 // ASSERT
                 Product expected = mapper.readValue(FileUtils.readFileToString(new File(FilenameUtils.concat("src/test/resources/case-function/updateProduct/expected", file.getName())), StandardCharsets.UTF_8), new TypeReference<Product>() {
                 });
-                System.out.println("actual " + responseActual);
-                System.out.println("expected " + expected);
+
+                logger.info("actual : " + actual);
+                logger.info("expected : " + expected);
 
                 assertEquals(expected.getProductName(), actual.getProductName());
                 assertEquals(expected.getProductCode(), actual.getProductCode());
@@ -63,7 +68,7 @@ public class ProductUpdateTest {
 
             }
         } catch (ResponseException e) {
-            System.out.println(e.getMessage());
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
         }
     }
 

@@ -75,4 +75,24 @@ public class ProductInquiryRequest {
     @JsonProperty("pageNumber")
     @ApiModelProperty(position = 14, required = false, dataType = "Integer")
     private Integer pageNumber;
+
+    @Override
+    public String toString() {
+        return "ProductInquiryRequest{" +
+                "productName='" + productName + '\'' +
+                ", productCode='" + productCode + '\'' +
+                ", productType='" + productType + '\'' +
+                ", description='" + description + '\'' +
+                ", productQuantity='" + productQuantity + '\'' +
+                ", price='" + price + '\'' +
+                ", status='" + status + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", createDateTimeBefore='" + createDateTimeBefore + '\'' +
+                ", createDateTimeEnd='" + createDateTimeEnd + '\'' +
+                ", pageSize=" + pageSize +
+                ", pageNumber=" + pageNumber +
+                '}';
+    }
 }

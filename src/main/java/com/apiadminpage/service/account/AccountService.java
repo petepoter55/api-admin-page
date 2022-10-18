@@ -16,6 +16,7 @@ import com.apiadminpage.repository.account.AccountRepository;
 import com.apiadminpage.service.log.LogService;
 import com.apiadminpage.utils.UtilityTools;
 import com.apiadminpage.validator.ValidateAccount;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,8 @@ import java.util.Optional;
 
 @Service
 public class AccountService {
+    private static final Logger logger = Logger.getLogger(AccountService.class);
+
     private final AccountInfoRepository accountInfoRepository;
     private final AccountRepository accountRepository;
     private final ValidateAccount validateAccount;
@@ -56,6 +59,8 @@ public class AccountService {
 
     @Transactional
     public Response createAccount(AccountRequest accountRequest) {
+        logger.info("start create account");
+        logger.info("create request : " + accountRequest);
         Account account = new Account();
 
         Date currentDate = null;
@@ -82,9 +87,11 @@ public class AccountService {
 
         } catch (ResponseException e) {
             status = false;
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | ParseException e) {
             status = false;
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         } finally {
             String type = Constant.TYPE_REGISTER_SUCCESS;
@@ -93,12 +100,14 @@ public class AccountService {
             }
             logService.insertLog(new LogRequest(accountRequest.getCreateBy(), type, currentDate));
         }
-
+        logger.info("done create account");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_REGISTER_ACCOUNT, account);
     }
 
     @Transactional
     public Response updateAccount(AccountUpdateRequest accountUpdateRequest) {
+        logger.info("start update account");
+        logger.info("update request : " + accountUpdateRequest);
         Account account;
         Date currentDate = null;
         boolean status = true;
@@ -130,9 +139,11 @@ public class AccountService {
             accountRepository.save(account);
         } catch (ResponseException e) {
             status = false;
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
             status = false;
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         } finally {
             String type = Constant.TYPE_UPDATE_SUCCESS;
@@ -141,10 +152,15 @@ public class AccountService {
             }
             logService.insertLog(new LogRequest(accountUpdateRequest.getUsername(), type, currentDate));
         }
+
+        logger.info("done update account");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_UPDATE_ACCOUNT, account);
     }
 
     public Response deleteAccount(Integer id) {
+        logger.info("start delete account");
+        logger.info("userId : " + id);
+
         Account account;
         try {
             Optional<Account> accountOptional = this.accountRepository.findById(id);
@@ -158,14 +174,21 @@ public class AccountService {
 
             accountRepository.save(account);
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
+
+        logger.info("done delete account");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_DELETE_ACCOUNT, null);
     }
 
     public Response inquiryAccountById(Integer id) {
+        logger.info("start inquiry account by id");
+        logger.info("userId : " + id);
+
         ResponseAccount responseAccount = new ResponseAccount();
         try {
             Optional<Account> accountOptional = accountRepository.findById(id);
@@ -176,11 +199,14 @@ public class AccountService {
             responseAccount = mapInquiryAccount(accountOptional.get());
 
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
 
+        logger.info("done inquiry account by id");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_ACCOUNT, responseAccount);
     }
 
@@ -197,8 +223,10 @@ public class AccountService {
                 responseAccountList.add(responseAccount);
             }
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
 
@@ -206,6 +234,9 @@ public class AccountService {
     }
 
     public Response inquiryByPage(InquiryAccountRequest request) {
+        logger.info("start inquiry account");
+        logger.info("inquiry request : " + request);
+
         List<Account> accountList;
 
         try {
@@ -214,9 +245,11 @@ public class AccountService {
                 throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_INQUIRY_DATA_NOT_FOUND);
             }
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         }
 
+        logger.info("done inquiry account");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_ACCOUNT, accountList);
     }
 
@@ -278,8 +311,8 @@ public class AccountService {
             if (request.getCreateDateTimeBefore() != null && !("").equals(request.getCreateDateTimeBefore())) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(accountRoot.get("createDateTime"), request.getCreateDateTimeBefore()));
             }
-            if (request.getCreateDateTimeEnd() != null && !("").equals(request.getCreateDateTimeEnd())){
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(accountRoot.get("createDateTime"),request.getCreateDateTimeEnd()));
+            if (request.getCreateDateTimeEnd() != null && !("").equals(request.getCreateDateTimeEnd())) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(accountRoot.get("createDateTime"), request.getCreateDateTimeEnd()));
             }
 
             criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));

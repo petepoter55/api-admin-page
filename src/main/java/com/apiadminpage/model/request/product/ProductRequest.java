@@ -47,4 +47,18 @@ public class ProductRequest {
     @JsonProperty("delFlag")
     @ApiModelProperty(position = 8, required = false, dataType = "String")
     private String delFlag;
+
+    @Override
+    public String toString() {
+        return "ProductRequest{" +
+                "productName='" + productName + '\'' +
+                ", productType='" + productType + '\'' +
+                ", description='" + description + '\'' +
+                ", productQuantity='" + productQuantity + '\'' +
+                ", price='" + price + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                '}';
+    }
 }

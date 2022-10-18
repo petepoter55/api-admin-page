@@ -2,12 +2,14 @@ package com.apiadminpage.impl.validation.request;
 
 import com.apiadminpage.environment.Constant;
 import com.apiadminpage.exception.ResponseException;
+import com.apiadminpage.impl.service.ProductUpdateTest;
 import com.apiadminpage.model.request.account.AccountRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,8 @@ import java.util.Set;
 
 @RunWith(SpringRunner.class)
 public class AccountRequestTest {
+    private static final Logger logger = Logger.getLogger(ProductUpdateTest.class);
+
     @Mock
     private Validator validator;
 
@@ -50,7 +54,7 @@ public class AccountRequestTest {
 
         try {
             for (File file : files) {
-                System.out.println("account request case => " + file.getName());
+                logger.debug("account request case => " + file.getName());
                 AccountRequest accountRequest = mapper.readValue(file, AccountRequest.class);
                 List<String> actual = new ArrayList<>();
 
@@ -61,16 +65,13 @@ public class AccountRequestTest {
 
                 List<String> expected = mapper.readValue(FileUtils.readFileToString(new File(FilenameUtils.concat("src/test/resources/case-input-request/accountRequest/expected", file.getName())), StandardCharsets.UTF_8), new TypeReference<List<String>>() {});
 
-//                logger.debug("Actual error => " + actual);
-//                logger.debug("Expected error => " + expected);
-                System.out.println("Actual error => " + actual);
-                System.out.println("Expected error => " + expected);
+                logger.debug("Actual error => " + actual);
+                logger.debug("Expected error => " + expected);
                 JSONCompareResult result = JSONCompare.compareJSON(mapper.writeValueAsString(expected), mapper.writeValueAsString(actual), JSONCompareMode.NON_EXTENSIBLE);
                 Assert.assertTrue(result.passed());
             }
         } catch (ResponseException e) {
-            System.out.println(Constant.THROW_EXCEPTION + e.getMessage());
-//            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
         }
     }
 

@@ -51,4 +51,19 @@ public class AccountInfoRequest {
     @JsonProperty("delFlag")
     @ApiModelProperty(position = 8, required = false, dataType = "Boolean", notes = "delFlag")
     private Boolean delFlag;
+
+    @Override
+    public String toString() {
+        return "AccountInfoRequest{" +
+                "userId='" + userId + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", citizenId='" + citizenId + '\'' +
+                ", province='" + province + '\'' +
+                ", district='" + district + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                ", delFlag=" + delFlag +
+                '}';
+    }
 }

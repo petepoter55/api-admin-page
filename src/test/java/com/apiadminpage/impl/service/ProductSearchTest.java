@@ -1,16 +1,17 @@
 package com.apiadminpage.impl.service;
 
 import com.apiadminpage.entity.product.Product;
+import com.apiadminpage.environment.Constant;
 import com.apiadminpage.exception.ResponseException;
 import com.apiadminpage.impl.model.product.ProductSearchTestRequest;
 import com.apiadminpage.model.response.Response;
-import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.service.product.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ProductSearchTest {
+    private static final Logger logger = Logger.getLogger(ProductSearchTest.class);
 
     @Mock
     private EntityManager entityManager;
@@ -69,8 +71,8 @@ public class ProductSearchTest {
                 // ASSERT
                 List<Product> expected = mapper.readValue(FileUtils.readFileToString(new File(FilenameUtils.concat("src/test/resources/case-function/searchProduct/expected", file.getName())), StandardCharsets.UTF_8), new TypeReference<List<Product>>() {
                 });
-                System.out.println("actual " + actual);
-                System.out.println("expected " + expected);
+                logger.info("actual : " + actual);
+                logger.info("expected : " + expected);
 
                 for (int i = 0; i < actual.size(); i++) {
                     assertEquals(expected.get(i).getProductName(), actual.get(i).getProductName());
@@ -79,7 +81,7 @@ public class ProductSearchTest {
                 }
             }
         } catch (ResponseException e) {
-            System.out.println(e.getMessage());
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
         }
     }
 

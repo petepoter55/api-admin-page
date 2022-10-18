@@ -9,6 +9,7 @@ import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.account.AccountInfoRepository;
 import com.apiadminpage.repository.account.AccountRepository;
 import com.apiadminpage.utils.UtilityTools;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 @Service
 public class AccountInfoService {
+    private static final Logger logger = Logger.getLogger(AccountInfoService.class);
+
     private final AccountInfoRepository accountInfoRepository;
     private final AccountRepository accountRepository;
 
@@ -29,6 +32,9 @@ public class AccountInfoService {
     }
 
     public Response createAccountInfo(AccountInfoRequest accountInfoRequest) {
+        logger.info("start create accountInfo");
+        logger.info("accountInfo request : " + accountInfoRequest);
+
         AccountInfo accountInfo = new AccountInfo();
         try {
             Optional<Account> account = accountRepository.findById(Integer.parseInt(accountInfoRequest.getUserId()));
@@ -47,11 +53,14 @@ public class AccountInfoService {
 
             accountInfoRepository.save(accountInfo);
         } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
         }
 
+        logger.info("done create accountInfo");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_REGISTER_ACCOUNT, accountInfo);
     }
 
@@ -60,7 +69,7 @@ public class AccountInfoService {
         try {
             accountInfo = accountInfoRepository.findByUserId(userId);
         } catch (ResponseException e) {
-            System.out.println("error :" + e.getMessage());
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
         }
         return accountInfo;
     }
