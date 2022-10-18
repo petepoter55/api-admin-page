@@ -1,0 +1,7 @@
+[
+  "productName: must not be null",
+  "productType: must not be null",
+  "description: must not be null",
+  "productQuantity: must not be null",
+  "price: must not be null"
+]

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,29 +18,28 @@ public class AccountUpdateRequest {
     @JsonProperty("id")
     @ApiModelProperty(position = 1, required = true, dataType = "Integer", notes = "Id")
     private Integer id;
-    @NotBlank
+    @NotNull
     @Size(max = 255)
     @JsonProperty("username")
     @ApiModelProperty(position = 2, required = true, dataType = "String", notes = "Username")
     private String username;
 
-    @Size(min = 1, max = 10)
+    @Size(max = 10)
     @JsonProperty("role")
     @ApiModelProperty(position = 3, required = true, dataType = "String", notes = "permission account")
     private String role;
 
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @JsonProperty("firstname")
     @ApiModelProperty(position = 4, required = true, dataType = "String")
     private String firstname;
 
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @JsonProperty("lastname")
     @ApiModelProperty(position = 5, required = true, dataType = "String")
     private String lastname;
 
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @JsonProperty("email")
     @ApiModelProperty(position = 6, required = true, dataType = "String")
     private String email;

@@ -28,7 +28,6 @@ public class InquiryAccountRequest {
     private String firstname;
 
     @JsonProperty("lastname")
-
     @ApiModelProperty(position = 5, required = true, dataType = "String")
     private String lastname;
 

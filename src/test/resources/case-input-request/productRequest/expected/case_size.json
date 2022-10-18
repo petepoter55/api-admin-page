@@ -1,0 +1,7 @@
+[
+  "productName: size must be between 1 and 255",
+  "productType: size must be between 1 and 255",
+  "description: size must be between 1 and 255",
+  "productQuantity: size must be between 1 and 50",
+  "price: size must be between 1 and 50"
+]

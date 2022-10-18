@@ -1,0 +1,10 @@
+[
+  "username: size must be between 1 and 255",
+  "password: size must be between 1 and 255",
+  "confirmPassword: size must be between 1 and 255",
+  "role: size must be between 1 and 10",
+  "firstname: size must be between 1 and 50",
+  "lastname: size must be between 1 and 50",
+  "email: size must be between 1 and 50",
+  "confirmEmail: size must be between 1 and 50"
+]

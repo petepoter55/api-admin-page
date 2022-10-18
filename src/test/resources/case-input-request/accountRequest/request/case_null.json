@@ -1,0 +1,12 @@
+{
+  "username": null,
+  "password": null,
+  "confirmPassword": null,
+  "role": null,
+  "firstname": null,
+  "lastname": null,
+  "email": null,
+  "confirmEmail": null,
+  "createBy": "usperadmin",
+  "delFlag": true
+}

@@ -1,0 +1,10 @@
+[
+  "username: must not be null",
+  "password: must not be null",
+  "confirmPassword: must not be null",
+  "role: must not be null",
+  "firstname: must not be null",
+  "lastname: must not be null",
+  "email: must not be null",
+  "confirmEmail: must not be null"
+]

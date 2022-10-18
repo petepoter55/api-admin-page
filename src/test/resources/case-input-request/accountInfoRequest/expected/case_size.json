@@ -1,0 +1,11 @@
+[
+  "userId: size must be between 1 and 10",
+  "phone: size must be between 0 and 25",
+  "birthDate: size must be between 0 and 20",
+  "citizenId: size must be between 0 and 50",
+  "province: size must be between 0 and 150",
+  "district: size must be between 0 and 150",
+  "createBy: size must be between 0 and 20",
+  "updateBy: size must be between 0 and 20",
+  "birthDate: Expected format YYYY-MM-DD"
+]
