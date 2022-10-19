@@ -32,15 +32,26 @@ public class Constant {
     public final static String SUCCESS_UPDATE_PRODUCT = "Update Product Success!";
     public final static String SUCCESS_DELETE_PRODUCT = "Delete Product Success!";
     public final static String SUCCESS_INQUIRY_PRODUCT = "Inquiry Product Success!";
+    public final static String SUCCESS_CREATE_IMAGE_PRODUCT = "Crete Image Product Success!";
+    public final static String SUCCESS_GET_IMAGE_PRODUCT = "Get Image Product Success!";
+    public final static String SUCCESS_UPDATE_IMAGE_PRODUCT = "Update Image Product Success!";
     public final static String SUCCESS_IMPORT_PRODUCT = "Import Product Success!";
     public final static String ERROR_CREATE_PRODUCT_DUPLICATE = "Data Product is Duplicate";
+    public final static String ERROR_CREATE_IMAGE_PRODUCT_DUPLICATE = "Data Image Product is Duplicate";
     public final static String ERROR_PRODUCT_NOT_FOUND = "Data Product is Not Found";
+    public final static String ERROR_IMAGE_PRODUCT_NOT_FOUND = "Data Image Product is Not Found";
+    public final static String ERROR_PRODUCT_CODE_NULL = "Product Code is Not Null";
+    public final static String ERROR_PRODUCT_CODE_SIZE = "Product Code size must be between 1 and 50";
     public final static String PRODUCT_STATUS_ACTIVE = "active";
     public final static String PRODUCT_STATUS_INACTIVE = "Inactive";
     public final static String ERROR_FILE_TYPE_INVALID = "Invalid File Type Should be Excel file.";
+    public final static String ERROR_FILE_IMAGE_TYPE_INVALID = "Invalid File Type Should be {jpeg|png} file.";
+    public final static String ERROR_FILE_IMAGE_NULL = "Invalid File is not null.";
 
     public final static String TYPE_FILE_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
+    public final static String TYPE_FILE_JPEG = "image/jpeg";
+    public final static String TYPE_FILE_PNG = "image/png";
+    public final static String[] TYPE_FILE_IMAGE = {TYPE_FILE_PNG,TYPE_FILE_JPEG};
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
     public final static String TYPE_UPDATE_SUCCESS = "R02";

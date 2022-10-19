@@ -9,6 +9,7 @@ import com.apiadminpage.model.request.product.ProductUpdateRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.utils.UtilityTools;
+import com.apiadminpage.validator.ValidateProduct;
 import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -32,13 +33,15 @@ public class ProductService {
     private static final Logger logger = Logger.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
+    private final ValidateProduct validateProduct;
     private final EntityManager entityManager;
 
     UtilityTools utilityTools = new UtilityTools();
 
     @Autowired
-    public ProductService(ProductRepository productRepository, EntityManager entityManager) {
+    public ProductService(ProductRepository productRepository, ValidateProduct validateProduct, EntityManager entityManager) {
         this.productRepository = productRepository;
+        this.validateProduct = validateProduct;
         this.entityManager = entityManager;
     }
 
@@ -175,12 +178,10 @@ public class ProductService {
     public Response importProduct(MultipartFile file) {
         logger.info("start import product");
         logger.info("file type : " + file.getContentType());
-        logger.info("file name : " + file.getName());
+        logger.info("file name : " + file.getOriginalFilename());
         List<ProductRequest> productList = new ArrayList<>();
         try {
-            if (!(Constant.TYPE_FILE_EXCEL).equals(file.getContentType())) {
-                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_TYPE_INVALID);
-            }
+            validateProduct.validateTypeExcel(file);
 
             XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
             XSSFSheet worksheet = workbook.getSheetAt(0);

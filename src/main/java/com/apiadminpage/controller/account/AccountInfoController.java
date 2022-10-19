@@ -1,5 +1,6 @@
 package com.apiadminpage.controller.account;
 
+import com.apiadminpage.controller.product.ProductImageController;
 import com.apiadminpage.entity.account.AccountInfo;
 import com.apiadminpage.model.request.account.AccountInfoRequest;
 import com.apiadminpage.model.response.Response;
@@ -7,15 +8,19 @@ import com.apiadminpage.service.account.AccountInfoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account-info")
 public class AccountInfoController {
+    private static final Logger logger = Logger.getLogger(AccountInfoController.class);
+
     private final AccountInfoService accountInfoService;
 
     @Autowired
@@ -35,8 +40,10 @@ public class AccountInfoController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response createAccountInfo(
-            @Valid @RequestBody(required = true) AccountInfoRequest accountInfoRequest
+            @Valid @RequestBody(required = true) AccountInfoRequest accountInfoRequest,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return accountInfoService.createAccountInfo(accountInfoRequest);
     }
 
@@ -52,8 +59,10 @@ public class AccountInfoController {
     @RequestMapping(value = "/inquiry/{userid}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody AccountInfo inquiryAccountInfo(
-            @PathVariable(value = "userid") String userid
+            @PathVariable(value = "userid") String userid,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return accountInfoService.inquiryAccountInfo(userid);
     }
 }

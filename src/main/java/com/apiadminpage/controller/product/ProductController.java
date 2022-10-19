@@ -11,17 +11,21 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+    private static final Logger logger = Logger.getLogger(ProductController.class);
+
     private final ProductService productService;
     private final ProductRepository productRepository;
 
@@ -43,8 +47,10 @@ public class ProductController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response createProduct(
-            @Valid @RequestBody(required = true) ProductRequest productRequest
+            @Valid @RequestBody(required = true) ProductRequest productRequest,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return productService.createProduct(productRequest);
     }
 
@@ -60,8 +66,10 @@ public class ProductController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response updateProduct(
-            @Valid @RequestBody(required = true) ProductUpdateRequest productUpdateRequest
+            @Valid @RequestBody(required = true) ProductUpdateRequest productUpdateRequest,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return productService.updateProduct(productUpdateRequest);
     }
 
@@ -77,8 +85,10 @@ public class ProductController {
     @RequestMapping(value = "/delete/{productId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response deleteProduct(
-            @PathVariable(value = "productId") Integer productId
+            @PathVariable(value = "productId") Integer productId,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return productService.deleteProduct(productId);
     }
 
@@ -109,8 +119,10 @@ public class ProductController {
     @RequestMapping(value = "/get-product", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response inquiryProduct(
-            @Valid @RequestBody(required = true) ProductInquiryRequest productInquiryRequest
+            @Valid @RequestBody(required = true) ProductInquiryRequest productInquiryRequest,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return productService.searchProductByPage(productInquiryRequest);
     }
 
@@ -127,8 +139,10 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response importProduct(
             @ApiParam(name = "upFile", value = "File import Product", required = true)
-            @RequestParam("upFile") MultipartFile file
+            @RequestParam("upFile") MultipartFile file,
+            HttpServletRequest request
     ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return productService.importProduct(file);
     }
 }
