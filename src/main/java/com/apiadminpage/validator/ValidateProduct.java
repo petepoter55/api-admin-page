@@ -28,7 +28,7 @@ public class ValidateProduct {
     }
 
     public void validateProductCode(String productCode) {
-        if (!StringUtils.isNotEmpty(productCode)) {
+        if (StringUtils.isEmpty(productCode)) {
             throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_PRODUCT_CODE_NULL);
         }
 

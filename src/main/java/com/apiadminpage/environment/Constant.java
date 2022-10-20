@@ -22,10 +22,18 @@ public class Constant {
     public final static String ERROR_REGISTER_CHECKDATA_DUPLICATE = "Data Register is Duplicate";
     public final static String ERROR_UPDATE_DATA_NOT_FOUND = "Data Register is Not Found";
     public final static String ERROR_INQUIRY_DATA_NOT_FOUND = "Data Register is Not Found";
+    public final static String ERROR_ACCOUNT_USERID_NULL = "User ID is Not Null";
+    public final static String ERROR_ACCOUNT_USERID_SIZE = "User ID size must be between 1 and 5";
+    public final static String ERROR_CREATE_IMAGE_ACCOUNT_DUPLICATE = "Data Image Account is Duplicate";
+    public final static String ERROR_CREATE_IMAGE_ACCOUNT_NOT_FOUND = "Data Image Account is Not Found";
+    public final static String ERROR_IMAGE_ACCOUNT_NOT_FOUND = "Data Image Account is Not Found";
     public final static String SUCCESS_REGISTER_ACCOUNT = "Register Account Success!";
     public final static String SUCCESS_UPDATE_ACCOUNT = "Update Account Success!";
     public final static String SUCCESS_DELETE_ACCOUNT = "Delete Account Success!";
     public final static String SUCCESS_INQUIRY_ACCOUNT = "Inquiry Account Success!";
+    public final static String SUCCESS_CREATE_IMAGE_ACCOUNT = "Crete Image Account Success!";
+    public final static String SUCCESS_GET_IMAGE_ACCOUNT = "Get Image Account Success!";
+    public final static String SUCCESS_UPDATE_IMAGE_ACCOUNT = "Update Image Account Success!";
 
     //product
     public final static String SUCCESS_CREATE_PRODUCT = "Create Product Success!";
