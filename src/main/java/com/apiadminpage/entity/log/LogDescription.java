@@ -14,8 +14,6 @@ public class LogDescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
-    @Column(name = "USERNAME")
-    private String username;
     @Column(name = "TYPE")
     private String type;
     @Column(name = "DESCRIPTION")
