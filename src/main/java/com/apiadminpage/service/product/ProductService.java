@@ -11,6 +11,7 @@ import com.apiadminpage.repository.product.ProductRepository;
 import com.apiadminpage.utils.UtilityTools;
 import com.apiadminpage.validator.ValidateProduct;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -23,7 +24,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -210,5 +213,72 @@ public class ProductService {
         }
         logger.info("done import product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_INQUIRY_PRODUCT, productList);
+    }
+
+    public void exportProduct(HttpServletResponse response, List<Product> productList) throws ParseException, IOException {
+        response.setHeader("Content-Type", "application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=" + "product_" + utilityTools.getFormatsDateString() + "_" + ".xlsx");
+        OutputStream outStream = null;
+
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Product");
+
+            // Fix header column excel
+            String[] columns = {
+                    "productCode",
+                    "productType",
+                    "productName",
+                    "description",
+                    "status",
+                    "productQuantity",
+                    "price",
+                    "createDateTime"
+            };
+
+            // set style Header
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 14);
+
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            // create header cell
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+
+            // initialize data in row
+            int rowNum = 1;
+            for (Product d : productList) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(d.getProductCode());
+                row.createCell(1).setCellValue(d.getProductType());
+                row.createCell(2).setCellValue(d.getProductName());
+                row.createCell(3).setCellValue(d.getDescription());
+                row.createCell(4).setCellValue(d.getStatus());
+                row.createCell(5).setCellValue(d.getProductQuantity());
+                row.createCell(6).setCellValue(d.getPrice());
+                row.createCell(7).setCellValue(utilityTools.generateDateTimeToThai(d.getCreateDateTime()));
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // output response file name
+            outStream = response.getOutputStream();
+            workbook.write(outStream);
+            outStream.flush();
+        } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
+        } finally {
+            if (outStream != null) {
+                outStream.close();
+            }
+        }
     }
 }

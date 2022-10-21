@@ -67,6 +67,14 @@ public class UtilityTools {
         return dates;
     }
 
+    public String getFormatsDateString() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+
+        Date dates = cal.getTime();
+        return df.format(dates);
+    }
+
     public static String generateDatetimeToString(Date date) throws ParseException {
         String formatDate = "yyyy-MM-dd";
         DateFormat dateFormat = new SimpleDateFormat(formatDate);
