@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test_peach" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fdf50d1a-3887-48c4-8ae7-ffc08b47c159">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="textName" class="java.lang.String"/>
+    <detail>
+        <band height="711" splitType="Stretch">
+            <line>
+                <reportElement x="555" y="0" width="1" height="703" uuid="bfd23d27-cc37-44f3-9edf-89195b0babd4"/>
+                <graphicElement>
+                    <pen lineWidth="0.75"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement x="0" y="0" width="555" height="1" uuid="ec965b1b-6d90-4dc3-80c9-b74356346f73"/>
+                <graphicElement>
+                    <pen lineWidth="0.75"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement x="-1" y="0" width="1" height="703" uuid="0eb392d5-7c57-48aa-b6e8-41699bf521cc"/>
+                <graphicElement>
+                    <pen lineWidth="0.75"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement x="-1" y="710" width="555" height="1" uuid="b56a5003-8049-4525-bf8e-635324bf665a"/>
+                <graphicElement>
+                    <pen lineWidth="0.75"/>
+                </graphicElement>
+            </line>
+            <textField>
+                <reportElement x="210" y="80" width="100" height="30" uuid="41cdf6e4-2e19-4d6e-91a7-75eca4e1a2b7"/>
+                <textFieldExpression><![CDATA[$F{textName}]]></textFieldExpression>
+            </textField>
+            <image>
+                <reportElement x="41" y="5" width="59" height="59" uuid="62face28-bd98-4667-bdd8-29eae2da474d"/>
+                <imageExpression><![CDATA["/resources/forms/img/logo.jpg"]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement x="151" y="16" width="210" height="20" uuid="dc7e4fd6-3d43-4b0b-8865-72831b7e713d"/>
+                <textElement textAlignment="Center">
+                    <font fontName="TH Sarabun New" size="14" isBold="true" pdfFontName="/Users/boonyaris/Library/Fonts/Archive/THSarabunNew Bold.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+                </textElement>
+                <text>แบบคำขอจัดทำ ส่งมอบ และเก็บรักษา</text>
+            </staticText>
+            <staticText>
+                <reportElement x="151" y="35" width="210" height="20" uuid="13f5ad85-3178-4f57-bae2-85f525956eb1"/>
+                <textElement textAlignment="Center">
+                    <font fontName="TH Sarabun New" size="14" isBold="true" pdfFontName="/Users/boonyaris/Library/Fonts/Archive/THSarabunNew Bold.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+                </textElement>
+                <text>ใบกำกับภาษีอิเล็กทรอนิกส์ และใบรับอิเล็กทรอนิกส์</text>
+            </staticText>
+            <staticText>
+                <reportElement x="433" y="1" width="122" height="75" uuid="64bd56e2-31fa-4a26-b2ca-f5f3ee60f260"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="TH Sarabun New" size="36" isBold="true" pdfFontName="/resources/forms/pdfFont/THSarabunNew Bold.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+                </textElement>
+                <text><![CDATA[บ.อ.๐๑]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="132" y="80" width="78" height="20" uuid="d78f1613-4220-4d76-ba24-fd666f834956">
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                </reportElement>
+                <textElement>
+                    <font fontName="TH Sarabun New" size="14" isBold="false" pdfFontName="/resources/forms/pdfFont/THSarabunNew.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+                </textElement>
+                <text><![CDATA[ชื่อผู้เสียภาษีอากร]]></text>
+            </staticText>
+        </band>
+    </detail>
+</jasperReport>

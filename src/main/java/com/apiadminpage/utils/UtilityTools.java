@@ -1,5 +1,11 @@
 package com.apiadminpage.utils;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 public class UtilityTools {
@@ -138,5 +145,20 @@ public class UtilityTools {
             }
         }
         return null;
+    }
+
+    public byte[] jasperToPDF(InputStream inputStream, String json) throws JRException, IOException {
+        byte[] pdf = null;
+        JsonDataSource datasource;
+        datasource = new JsonDataSource(new ByteArrayInputStream(json.getBytes("UTF-8")));
+        HashMap<String, Object> parameter = new HashMap<String, Object>();
+        // compile the report from the stream.
+        JasperReport report = JasperCompileManager.compileReport(inputStream);
+        // file out the report into a print object, ready for export.
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameter, datasource);
+        // export it!.
+        pdf = JasperExportManager.exportReportToPdf(jasperPrint);
+
+        return pdf;
     }
 }

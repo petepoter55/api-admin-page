@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiResponses;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -159,7 +158,7 @@ public class ProductController {
             @ApiResponse(code = 409, message = "Business Error"),
             @ApiResponse(code = 500, message = "Internal server error occurred"),
             @ApiResponse(code = 503, message = "Service Unavailable")})
-    @RequestMapping(value = "/export-product", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/export-product", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void exportProductExcel(
             @ApiParam(name = "list product", value = "List<Product>", required = true, type = "List<Product>")

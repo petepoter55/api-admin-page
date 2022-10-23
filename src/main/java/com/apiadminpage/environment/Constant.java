@@ -60,6 +60,15 @@ public class Constant {
     public final static String TYPE_FILE_JPEG = "image/jpeg";
     public final static String TYPE_FILE_PNG = "image/png";
     public final static String[] TYPE_FILE_IMAGE = {TYPE_FILE_PNG,TYPE_FILE_JPEG};
+    public final static String TYPE_FILE_XML = "application/xml";
+
+    //report
+    public final static String ERROR_DATA_REPORT_NOT_FOUND = "Data Report is Not Found";
+    public final static String ERROR_FILE_XML_TYPE_INVALID = "Invalid File Type Should be xml file.";
+    public final static String ERROR_VERSION_REPORT_NULL = "version is Not Null";
+    public final static String ERROR_START_DATE_REPORT_NULL = "startDate is Not Null";
+    public final static String ERROR_END_DATE_REPORT_NULL = "endDate is Not Null";
+    public final static String ERROR_NAME_REPORT_NULL = "name is Not Null";
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
     public final static String TYPE_UPDATE_SUCCESS = "R02";

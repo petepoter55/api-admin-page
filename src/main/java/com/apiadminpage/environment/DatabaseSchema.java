@@ -9,4 +9,6 @@ public class DatabaseSchema {
 
     public static final String LogInfo = "LOG";
     public static final String LogDescription = "LOG";
+
+    public static final String ManageReport = "REPORT";
 }
