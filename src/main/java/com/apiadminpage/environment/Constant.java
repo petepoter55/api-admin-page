@@ -91,4 +91,9 @@ public class Constant {
 
     public final static String SUCCESS_INQUIRY_LOG = "Inquiry Log Account Success!";
     public final static String ERROR_INQUIRY_LOG_DATA_NOT_FOUND = "Data Log is Not Found";
+
+    // line notification
+    public final static String CONTENT_TYPE_REQUEST_LINE = "application/x-www-form-urlencoded";
+    public final static String URL_NOTIFICATION = "https://notify-api.line.me/api/notify";
+
 }
