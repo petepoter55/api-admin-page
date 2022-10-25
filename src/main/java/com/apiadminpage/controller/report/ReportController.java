@@ -32,7 +32,7 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @ApiOperation(value = "Export Product Data to Excel", nickname = "exportProduct", notes = "Export Data Product in Excel")
+    @ApiOperation(value = "insert Form Report to database", nickname = "insertFormReport", notes = "Insert Form Report to database")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -81,5 +81,57 @@ public class ReportController {
     ) throws IOException, ParseException {
         logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         reportService.getPDF(response, jsonRequest);
+    }
+
+    @ApiOperation(value = "update Form Report to database", nickname = "updateFormReport", notes = "Update Form Report to database")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Business Error"),
+            @ApiResponse(code = 500, message = "Internal server error occurred"),
+            @ApiResponse(code = 503, message = "Service Unavailable")})
+    @RequestMapping(value = "/update-form", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateFormReport(
+            @ApiParam(name = "document", value = "document file xml to be uploaded", required = false)
+            @RequestPart(value = "document", required = false) MultipartFile file,
+            @ApiParam(name = "version", value = "version file xml to be uploaded", required = false)
+            @RequestPart(value = "version", required = false) String version,
+            @ApiParam(name = "name", value = "name file xml to be uploaded", required = false)
+            @RequestPart(value = "name", required = false) String name,
+            @ApiParam(name = "startDate", value = "startDate file xml to be uploaded", required = false)
+            @RequestPart(value = "startDate", required = false) String startDate,
+            @ApiParam(name = "endDate", value = "endDate file xml to be uploaded", required = false)
+            @RequestPart(value = "endDate", required = false) String endDate,
+            @ApiParam(name = "updateBy", value = "update By", required = false)
+            @RequestPart(value = "updateBy", required = false) String updateBy,
+            @ApiParam(name = "reportId", value = "reportId", required = true)
+            @RequestPart(value = "reportId", required = true) String reportId,
+            HttpServletRequest request
+    ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
+        return reportService.updateReport(file, version, name, startDate, endDate, updateBy, reportId);
+    }
+
+    @ApiOperation(value = "delete Form Report to database", nickname = "deleteFormReport", notes = "Delete Form Report to database")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Business Error"),
+            @ApiResponse(code = 500, message = "Internal server error occurred"),
+            @ApiResponse(code = 503, message = "Service Unavailable")})
+    @RequestMapping(value = "/delete-form/{reportId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteFormReport(
+            @ApiParam(name = "reportId", value = "reportId", required = true)
+            @PathVariable(value = "reportId") Integer reportId,
+            HttpServletRequest request
+    ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
+        return reportService.deleteReport(reportId);
     }
 }

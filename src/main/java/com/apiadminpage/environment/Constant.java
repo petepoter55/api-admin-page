@@ -31,7 +31,7 @@ public class Constant {
     public final static String SUCCESS_UPDATE_ACCOUNT = "Update Account Success!";
     public final static String SUCCESS_DELETE_ACCOUNT = "Delete Account Success!";
     public final static String SUCCESS_INQUIRY_ACCOUNT = "Inquiry Account Success!";
-    public final static String SUCCESS_CREATE_IMAGE_ACCOUNT = "Crete Image Account Success!";
+    public final static String SUCCESS_CREATE_IMAGE_ACCOUNT = "Create Image Account Success!";
     public final static String SUCCESS_GET_IMAGE_ACCOUNT = "Get Image Account Success!";
     public final static String SUCCESS_UPDATE_IMAGE_ACCOUNT = "Update Image Account Success!";
 
@@ -40,7 +40,7 @@ public class Constant {
     public final static String SUCCESS_UPDATE_PRODUCT = "Update Product Success!";
     public final static String SUCCESS_DELETE_PRODUCT = "Delete Product Success!";
     public final static String SUCCESS_INQUIRY_PRODUCT = "Inquiry Product Success!";
-    public final static String SUCCESS_CREATE_IMAGE_PRODUCT = "Crete Image Product Success!";
+    public final static String SUCCESS_CREATE_IMAGE_PRODUCT = "Create Image Product Success!";
     public final static String SUCCESS_GET_IMAGE_PRODUCT = "Get Image Product Success!";
     public final static String SUCCESS_UPDATE_IMAGE_PRODUCT = "Update Image Product Success!";
     public final static String SUCCESS_IMPORT_PRODUCT = "Import Product Success!";
@@ -62,13 +62,27 @@ public class Constant {
     public final static String[] TYPE_FILE_IMAGE = {TYPE_FILE_PNG,TYPE_FILE_JPEG};
     public final static String TYPE_FILE_XML = "application/xml";
 
+    // account info
+    public final static String ERROR_DATA_ACCOUNT_INFO_DUPLICATE = "Data Account Info is Duplicate";
+    public final static String ERROR_DATA_ACCOUNT_INFO_NOT_FOUND = "Data Account Info is Not Found";
+
     //report
     public final static String ERROR_DATA_REPORT_NOT_FOUND = "Data Report is Not Found";
-    public final static String ERROR_FILE_XML_TYPE_INVALID = "Invalid File Type Should be xml file.";
+    public final static String ERROR_DATA_REPORT_DUPLICATE = "Data Report is Duplicate";
+    public final static String ERROR_FILE_XML_TYPE_INVALID = "Invalid File Type Should be xml file";
+    public final static String ERROR_FILE_XML_NOT_FOUND = "File request not Found";
+    public final static String ERROR_REPORT_ID_REPORT_NULL = "report id is Not Null";
     public final static String ERROR_VERSION_REPORT_NULL = "version is Not Null";
     public final static String ERROR_START_DATE_REPORT_NULL = "startDate is Not Null";
     public final static String ERROR_END_DATE_REPORT_NULL = "endDate is Not Null";
     public final static String ERROR_NAME_REPORT_NULL = "name is Not Null";
+    public final static String SUCCESS_CREATE_REPORT = "Create Report Success!";
+    public final static String SUCCESS_UPDATE_REPORT = "Update Report Success!";
+    public final static String SUCCESS_DELETE_REPORT = "Delete Report Success!";
+
+    public final static String TYPE_REPORT_INSERT = "insert";
+    public final static String TYPE_REPORT_UPDATE = "update";
+
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
     public final static String TYPE_UPDATE_SUCCESS = "R02";

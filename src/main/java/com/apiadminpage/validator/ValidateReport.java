@@ -26,14 +26,18 @@ public class ValidateReport {
         }
     }
 
-    public void validateXML(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_IMAGE_NULL);
+    public void validateTypeXML(MultipartFile file, String type) {
+        if (((Constant.TYPE_REPORT_INSERT.equals(type) || Constant.TYPE_REPORT_UPDATE.equals(type)) && !file.isEmpty())) {
+            if (!Constant.TYPE_FILE_XML.equals(file.getContentType())) {
+                throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_XML_TYPE_INVALID);
+            }
         }
 
-        if (!Constant.TYPE_FILE_XML.equals(file.getContentType())) {
-            throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_XML_TYPE_INVALID);
-        }
+    }
+
+    public void validateFileInput(MultipartFile file) {
+        if (file.isEmpty())
+            throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_FILE_XML_NOT_FOUND);
     }
 
     public void validateInputReport(String version, String name, String startDate, String endDate) {
@@ -48,6 +52,12 @@ public class ValidateReport {
         }
         if (StringUtils.isEmpty(endDate)) {
             throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_END_DATE_REPORT_NULL);
+        }
+    }
+
+    public void validateReportId(String reportId) {
+        if (StringUtils.isEmpty(reportId)) {
+            throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_REPORT_ID_REPORT_NULL);
         }
     }
 }
