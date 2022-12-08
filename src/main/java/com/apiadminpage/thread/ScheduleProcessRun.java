@@ -20,8 +20,8 @@ public class ScheduleProcessRun {
     @Value("${host-master}")
     private String HOST_MASTER;
 
-    //    @Scheduled(cron = "0 1 0 ? * *") // every 12.00 PM
-    @Scheduled(cron = "30 * * ? * *") //every 0.30 sec
+    @Scheduled(cron = "0 1 0 ? * *") // every 12.00 PM
+//    @Scheduled(cron = "30 * * ? * *") //every 0.30 sec
     public void run() {
         if (System.getProperty("hostName").equals(HOST_MASTER)) {
             logger.info("Running ScheduleProcessRun ...");

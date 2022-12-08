@@ -16,5 +16,7 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-host-master : boonyariss-MacBook-Pro.local
-line-token : yBOjnzrqXnMMz0gNWDyLsIIlcz5ZMcBbmxMZSpSWLBf
+host-master: boonyariss-MacBook-Pro.local
+line-token: yBOjnzrqXnMMz0gNWDyLsIIlcz5ZMcBbmxMZSpSWLBf
+jwt:
+  secretKey: sdsdlkldfsfkdjsjfgkowflksnfsjfiossmlvsjfiejiwjroiewjirjijwfwjirwjirjiowjirjiwjifjikjsfcksnfjwsifjioejrijwirjfi

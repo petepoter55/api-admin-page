@@ -35,6 +35,11 @@ public class Constant {
     public final static String SUCCESS_GET_IMAGE_ACCOUNT = "Get Image Account Success!";
     public final static String SUCCESS_UPDATE_IMAGE_ACCOUNT = "Update Image Account Success!";
 
+    //login
+    public final static String ERROR_LOGIN_DATA_NOT_FOUND = "Data Register is Not Found";
+    public final static String ERROR_LOGIN_PASSWORD_INVALID = "Password or Username Invalid";
+    public final static String SUCCESS_LOGIN_ACCOUNT = "Login Account Success!";
+
     //product
     public final static String SUCCESS_CREATE_PRODUCT = "Create Product Success!";
     public final static String SUCCESS_UPDATE_PRODUCT = "Update Product Success!";
@@ -95,5 +100,15 @@ public class Constant {
     // line notification
     public final static String CONTENT_TYPE_REQUEST_LINE = "application/x-www-form-urlencoded";
     public final static String URL_NOTIFICATION = "https://notify-api.line.me/api/notify";
+
+    //path interceptor
+    public final static String PATH_SWAGGER_1 = "/v2/api-docs";
+    public final static String PATH_SWAGGER_2 = "/swagger-resources/**";
+    public final static String PATH_SWAGGER_3 = "/swagger-ui.html";
+    public final static String PATH_SWAGGER_4 = "/webjars/**";
+    public final static String PATH_CREATE_ACCOUNT = "/account/create";
+    public final static String PATH_INQUIRY_ACCOUNT_ALL = "/account/inquiryAll";
+    public final static String PATH_LOGIN = "/account/login";
+    public final static String[] PATH_EXCLUDE = {PATH_SWAGGER_1, PATH_SWAGGER_2, PATH_SWAGGER_3, PATH_SWAGGER_4, PATH_CREATE_ACCOUNT, PATH_INQUIRY_ACCOUNT_ALL, PATH_LOGIN};
 
 }

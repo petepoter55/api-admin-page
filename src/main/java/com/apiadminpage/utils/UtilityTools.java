@@ -89,6 +89,13 @@ public class UtilityTools {
         return dateFormat.format(date);
     }
 
+    public String generateDatetimeMilliToString(Date date) throws ParseException {
+        String formatDate = "yyyy-MM-dd HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(formatDate);
+
+        return dateFormat.format(date);
+    }
+
     public String generateDateTimeToThai(Date date) throws ParseException {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

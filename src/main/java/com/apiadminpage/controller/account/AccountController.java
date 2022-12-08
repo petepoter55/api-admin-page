@@ -1,12 +1,14 @@
 package com.apiadminpage.controller.account;
 
 import com.apiadminpage.controller.product.ProductImageController;
+import com.apiadminpage.model.request.account.AccountLoginRequest;
 import com.apiadminpage.model.request.account.AccountRequest;
 import com.apiadminpage.model.request.account.AccountUpdateRequest;
 import com.apiadminpage.model.request.account.InquiryAccountRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.service.account.AccountService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.log4j.Logger;
@@ -113,10 +115,30 @@ public class AccountController {
     @RequestMapping(value = "/inquiryByPage", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response inquiryAccountByPage(
-            @RequestBody(required = true) InquiryAccountRequest inquiryAccountRequest,
+            @Valid @RequestBody(required = true) InquiryAccountRequest inquiryAccountRequest,
             HttpServletRequest request
     ) {
         logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
         return accountService.inquiryByPage(inquiryAccountRequest);
+    }
+
+    @ApiOperation(value = "login By Account", nickname = "loginByAccount", notes = "Login By Account from database")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Business Error"),
+            @ApiResponse(code = 500, message = "Internal server error occurred"),
+            @ApiResponse(code = 503, message = "Service Unavailable")})
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Response login(
+            @ApiParam(name = "AccountLoginRequest", value = "Account login in the request body", required = true)
+            @Valid @RequestBody(required = true) AccountLoginRequest accountLoginRequest,
+            HttpServletRequest request
+    ) {
+        logger.info("Path =" + request.getRequestURI() + ", method = " + request.getMethod() + " INITIATED...");
+        return accountService.login(accountLoginRequest);
     }
 }
