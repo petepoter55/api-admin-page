@@ -28,12 +28,14 @@ public class LogController {
             @ApiResponse(code = 409, message = "Business Error"),
             @ApiResponse(code = 500, message = "Internal server error occurred"),
             @ApiResponse(code = 503, message = "Service Unavailable")})
-    @RequestMapping(value = "/inquiry/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/inquiry", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response inquiryAccountById(
-            @PathVariable(value = "username") String username
+            @RequestParam(value = "username") String username,
+            @RequestParam(value = "pageSize") Integer pageSize,
+            @RequestParam(value = "pageNumber") Integer pageNumber
     ) {
-        return logService.inquiryLog(username);
+        return logService.inquiryLog(username, pageSize, pageNumber);
     }
 
 }

@@ -91,10 +91,14 @@ public class Constant {
     //log
     public final static String TYPE_REGISTER_SUCCESS = "R01";
     public final static String TYPE_UPDATE_SUCCESS = "R02";
+    public final static String TYPE_LOGIN_SUCCESS = "R03";
+    public final static String TYPE_CREATE_PRODUCT_SUCCESS = "R04";
     public final static String TYPE_REGISTER_FAILED = "F01";
     public final static String TYPE_UPDATE_FAILED = "F02";
+    public final static String TYPE_LOGIN_FAILED = "F03";
+    public final static String TYPE_CREATE_PRODUCT_FAILED = "F04";
 
-    public final static String SUCCESS_INQUIRY_LOG = "Inquiry Log Account Success!";
+    public final static String SUCCESS_INQUIRY_LOG = "Inquiry Log Success!";
     public final static String ERROR_INQUIRY_LOG_DATA_NOT_FOUND = "Data Log is Not Found";
 
     // line notification
