@@ -40,15 +40,19 @@ public class LogService {
     }
 
     public void insertLog(LogRequest logRequest) {
-        LogInfo logInfo = new LogInfo();
-        logInfo.setUsername(logRequest.getCreateBy())
-                .setType(logRequest.getType())
-                .setCreateDateTime(logRequest.getCreateDateTime());
+        try {
+            LogInfo logInfo = new LogInfo();
+            logInfo.setUsername(logRequest.getCreateBy())
+                    .setType(logRequest.getType())
+                    .setCreateDateTime(logRequest.getCreateDateTime());
 
-        logInfoRepository.save(logInfo);
+            logInfoRepository.save(logInfo);
+        } catch (ResponseException e) {
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
+        }
     }
 
-    public Response inquiryLog(String username) {
+    public Response inquiryLog(String username, Integer pageSize, Integer pageNumber) {
         List<LogResponse> logResponseList;
         List<Tuple> tuples;
         try {
@@ -72,7 +76,11 @@ public class LogService {
                     criteriaBuilder.and(predicate)
             );
 
-            tuples = entityManager.createQuery(criteriaQuery).getResultList();
+            tuples = entityManager.createQuery(criteriaQuery)
+                    .setMaxResults(pageSize) // pageSize
+                    .setFirstResult(pageNumber * pageSize) // offset
+                    .getResultList();
+
             logResponseList = tuples.stream().map(tuple -> {
                 LogResponse logResponse = new LogResponse();
                 logResponse.setUsername(tuple.get(0, String.class));

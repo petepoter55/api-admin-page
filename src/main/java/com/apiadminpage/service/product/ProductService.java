@@ -3,11 +3,13 @@ package com.apiadminpage.service.product;
 import com.apiadminpage.entity.product.Product;
 import com.apiadminpage.environment.Constant;
 import com.apiadminpage.exception.ResponseException;
+import com.apiadminpage.model.request.log.LogRequest;
 import com.apiadminpage.model.request.product.ProductInquiryRequest;
 import com.apiadminpage.model.request.product.ProductRequest;
 import com.apiadminpage.model.request.product.ProductUpdateRequest;
 import com.apiadminpage.model.response.Response;
 import com.apiadminpage.repository.product.ProductRepository;
+import com.apiadminpage.service.log.LogService;
 import com.apiadminpage.utils.UtilityTools;
 import com.apiadminpage.validator.ValidateProduct;
 import org.apache.log4j.Logger;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,27 +40,35 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ValidateProduct validateProduct;
     private final EntityManager entityManager;
+    private final LogService logService;
 
     UtilityTools utilityTools = new UtilityTools();
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ValidateProduct validateProduct, EntityManager entityManager) {
+    public ProductService(ProductRepository productRepository, ValidateProduct validateProduct, EntityManager entityManager, LogService logService) {
         this.productRepository = productRepository;
         this.validateProduct = validateProduct;
         this.entityManager = entityManager;
+        this.logService = logService;
     }
 
     public Response createProduct(ProductRequest productRequest) {
         logger.info("start create product");
         logger.info("product request : " + productRequest);
         Product product = new Product();
+        Date currentDate = null;
+        String typeLog = null;
+
         try {
+            typeLog = Constant.TYPE_CREATE_PRODUCT_SUCCESS;
+            currentDate = utilityTools.getFormatsDateMilli();
+
             Product productCheck = productRepository.findByProductName(productRequest.getProductName());
             if (productCheck != null) {
                 throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_CREATE_PRODUCT_DUPLICATE);
             }
 
-            product.setProductCode("product-00" + utilityTools.randomNumber(4))
+            product.setProductCode("product-00" + utilityTools.randomNumber(6))
                     .setProductName(productRequest.getProductName())
                     .setProductType(productRequest.getProductType())
                     .setProductQuantity(productRequest.getProductQuantity())
@@ -69,11 +80,17 @@ public class ProductService {
 
             productRepository.save(product);
         } catch (ResponseException e) {
+            typeLog = Constant.TYPE_CREATE_PRODUCT_FAILED;
+
             logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (ParseException e) {
+            typeLog = Constant.TYPE_CREATE_PRODUCT_FAILED;
+
             logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
+        } finally {
+            logService.insertLog(new LogRequest(productRequest.getUsername(), typeLog, currentDate));
         }
         logger.info("done create product");
         return Response.success(Constant.STATUS_CODE_SUCCESS, Constant.SUCCESS_CREATE_PRODUCT, product);

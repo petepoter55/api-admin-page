@@ -346,7 +346,13 @@ public class AccountService {
         logger.info("start login");
         logger.info("username : " + accountLoginRequest.getUsername());
         AccountLoginResponse accountLoginResponse = new AccountLoginResponse();
+        Date currentDate = null;
+        String typeLog = null;
+
         try {
+            typeLog = Constant.TYPE_LOGIN_SUCCESS;
+            currentDate = utilityTools.getFormatsDateMilli();
+
             Account account = accountRepository.findByUsername(accountLoginRequest.getUsername());
             if (account == null) {
                 throw new ResponseException(Constant.STATUS_CODE_ERROR, Constant.ERROR_LOGIN_DATA_NOT_FOUND);
@@ -363,11 +369,17 @@ public class AccountService {
             accountLoginResponse = mapAccountLoginResponse(account, jwtService.generateToken(account.getId()));
 
         } catch (ResponseException e) {
+            typeLog = Constant.TYPE_LOGIN_FAILED;
+
             logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(e.getExceptionCode(), e.getMessage(), null);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | ParseException e) {
+            typeLog = Constant.TYPE_LOGIN_FAILED;
+
             logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
             return Response.fail(String.valueOf(e.hashCode()), e.getMessage(), null);
+        } finally {
+            logService.insertLog(new LogRequest(accountLoginRequest.getUsername(), typeLog, currentDate));
         }
 
         logger.info("done login..");

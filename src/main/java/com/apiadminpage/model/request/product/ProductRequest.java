@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"productName", "productType", "description", "productQuantity", "price", "createBy", "updateBy", "delFlag"})
+@JsonPropertyOrder({"productName", "productType", "description", "productQuantity", "price", "createBy", "updateBy", "delFlag", "username"})
 public class ProductRequest {
     @NotNull
     @Size(min = 1, max = 255)
@@ -47,6 +47,11 @@ public class ProductRequest {
     @JsonProperty("delFlag")
     @ApiModelProperty(position = 8, required = false, dataType = "String")
     private String delFlag;
+    @NotNull
+    @Size(min = 1, max = 50)
+    @JsonProperty("username")
+    @ApiModelProperty(position = 9, required = true, dataType = "String")
+    private String username;
 
     @Override
     public String toString() {
@@ -59,6 +64,7 @@ public class ProductRequest {
                 ", createBy='" + createBy + '\'' +
                 ", updateBy='" + updateBy + '\'' +
                 ", delFlag='" + delFlag + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

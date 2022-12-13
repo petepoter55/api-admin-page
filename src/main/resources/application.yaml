@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:db2://localhost:50003/market
     username: db2inst1
-    password: db2inst12
+    password: db2inst1
     driverClassName: com.ibm.db2.jcc.DB2Driver
   jpa:
     generate-ddl: true
