@@ -2,8 +2,10 @@ package com.apiadminpage.interceptor;
 
 import com.apiadminpage.exception.ResponseException;
 import com.apiadminpage.model.response.Response;
+import com.apiadminpage.service.jwt.JWTService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,11 +17,14 @@ import java.io.PrintWriter;
 public class AuthenticationInterceptor implements HandlerInterceptor {
     private final static Logger logger = Logger.getLogger(AuthenticationInterceptor.class);
 
+    @Autowired
+    private JWTService jwtService;
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         try {
             logger.info("preHandle start...");
-            System.out.println(httpServletRequest.getHeader("token"));
+            this.jwtService.checkAccessToken(httpServletRequest.getHeader("token"));
         } catch (ResponseException e) {
             logger.info(e.getMessage(), e);
             httpServletResponse.setHeader("content-type", "application/json");

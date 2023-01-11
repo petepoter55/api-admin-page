@@ -115,4 +115,29 @@ public class Constant {
     public final static String PATH_LOGIN = "/account/login";
     public final static String[] PATH_EXCLUDE = {PATH_SWAGGER_1, PATH_SWAGGER_2, PATH_SWAGGER_3, PATH_SWAGGER_4, PATH_CREATE_ACCOUNT, PATH_INQUIRY_ACCOUNT_ALL, PATH_LOGIN};
 
+    // code
+    public final static String CODE_RESPONSE_SUCCESS = "T001";
+    public final static String CODE_RESPONSE_NOT_FOUND = "T002";
+    public final static String CODE_RESPONSE_INVALID_PARAM = "T003";
+    public final static String CODE_RESPONSE_INVALID_AUTH = "T004";
+    public final static String CODE_RESPONSE_TOKEN_EXPIRE = "T005";
+    public final static String CODE_RESPONSE_ERROR_OVER_LIMIT = "T006";
+    public final static String CODE_RESPONSE_ERROR = "T999";
+
+    // Message
+    public final static String MESSAGE_SUCCESS = "success";
+    public final static String MESSAGE_INVALID_PARAM = "Invalid Parameter";
+    public final static String MESSAGE_OVER_LIMIT = "Limited Access";
+    public final static String MESSAGE_ERROR_AUTH = "Authenticate Fail";
+    public final static String MESSAGE_ERROR_PERMISSION = "No Permission";
+    public final static String MESSAGE_ERROR_TOKEN_INVALID = "Invalid Authorization";
+    public final static String MESSAGE_ERROR_PERIOD = "No Period";
+    public final static String MESSAGE_EXPIRE = "Token Expired";
+    public final static String MESSAGE_DATA_NOT_FOUND = "Data Not Found";
+    public final static String MESSAGE_ERROR = "error";
+
+    //redis
+    public static final String EXPIRED_REDIS_KEY_TOKEN_TIME_HOURS_TYPE = "HOURS";
+    public static final String REDIS_PROCESS_LOGIN =  "LOGIN";
+    public static final String REDIS_KEY_TOKEN_NAME = "Jwt_token_interceptor";
 }

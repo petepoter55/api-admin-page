@@ -17,12 +17,14 @@ import com.apiadminpage.repository.account.AccountInfoRepository;
 import com.apiadminpage.repository.account.AccountRepository;
 import com.apiadminpage.service.jwt.JWTService;
 import com.apiadminpage.service.log.LogService;
+import com.apiadminpage.service.redis.RedisService;
 import com.apiadminpage.utils.UtilityTools;
 import com.apiadminpage.validator.ValidateAccount;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -41,6 +43,8 @@ import java.util.Optional;
 public class AccountService {
     private static final Logger logger = Logger.getLogger(AccountService.class);
 
+    private String test;
+
     private final AccountInfoRepository accountInfoRepository;
     private final AccountRepository accountRepository;
     private final ValidateAccount validateAccount;
@@ -48,11 +52,12 @@ public class AccountService {
     private final AccountInfoService accountInfoService;
     private final EntityManager entityManager;
     private final JWTService jwtService;
+    private final RedisService redisService;
 
     UtilityTools utilityTools = new UtilityTools();
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, AccountInfoRepository accountInfoRepository, ValidateAccount validateAccount, LogService logService, AccountInfoService accountInfoService, EntityManager entityManager, JWTService jwtService) {
+    public AccountService(AccountRepository accountRepository, AccountInfoRepository accountInfoRepository, ValidateAccount validateAccount, LogService logService, AccountInfoService accountInfoService, EntityManager entityManager, JWTService jwtService, RedisService redisService) {
         this.accountInfoRepository = accountInfoRepository;
         this.accountRepository = accountRepository;
         this.validateAccount = validateAccount;
@@ -60,6 +65,17 @@ public class AccountService {
         this.accountInfoService = accountInfoService;
         this.entityManager = entityManager;
         this.jwtService = jwtService;
+        this.redisService = redisService;
+    }
+
+    @PostConstruct
+    public void init() throws Exception{
+        try {
+            test = "PostConstruct";
+            logger.info("PostConstruct : " + test);
+        }catch (ResponseException e){
+            logger.error(String.format(Constant.THROW_EXCEPTION, e.getMessage()));
+        }
     }
 
     @Transactional
@@ -344,6 +360,7 @@ public class AccountService {
      */
     public Response login(AccountLoginRequest accountLoginRequest) {
         logger.info("start login");
+        logger.info("start login :" + test);
         logger.info("username : " + accountLoginRequest.getUsername());
         AccountLoginResponse accountLoginResponse = new AccountLoginResponse();
         Date currentDate = null;
@@ -400,7 +417,7 @@ public class AccountService {
         accountLoginResponse.setDelFlag(account.getDelFlag());
         accountLoginResponse.setCreateDateTime(utilityTools.generateDatetimeMilliToString(account.getCreateDateTime()));
         accountLoginResponse.setUpdateDateTime(utilityTools.generateDatetimeMilliToString(account.getCreateDateTime()));
-        accountLoginResponse.setToken(token);
+        accountLoginResponse.setToken(this.redisService.getValueFromRedis(Constant.REDIS_KEY_TOKEN_NAME,String.valueOf(account.getId()),"1",Constant.EXPIRED_REDIS_KEY_TOKEN_TIME_HOURS_TYPE,Constant.REDIS_PROCESS_LOGIN));
 
         return accountLoginResponse;
     }
